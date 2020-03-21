@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/ao<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd" default-autowire="byName">
+<!--开启注解扫描-->
+<context:component-scan base-package="com.qin.dao,com.qin.service,com.qin.aop"/>
+<!--引入外部链接数据库文件-->
+
+<!--数据源,可以采用很多的连接池,dbcp,dbcp2,c3p0,druid...-->
+
+<!--整合mybatis的所有资源文件配置
+    autowire="byName":spring回去查找一个与属性名相同的id注入
+    比如SqlSessionFactoryBean有一个dataSource属性,他就会去找id为dataSource的bean
+    找到后就自动注入给SqlSessionFactoryBean的dataSource属性
+    总结:只要我们数据源的id配置成dataSource,那么SqlSessionFactoryBean的dataSource属性会自动注入
+-->
+<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" autowire="byName">
+    <!--        <property name="dataSource" ref="dataSource"/>-->
+    <property name="configLocation" value="classpath:mybatis.xml"/>
+    <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+</bean>
+<!--接口扫描-->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="dao"/>
+    <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+</bean>
+
+<!--配置事务管理器-->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+<!--开启事务注解驱动-->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+<!--
+    开启事务注解驱动,配置方法:
+    1.配置事务管理器
+    2.开启事务注解:<tx:annotation-driven transaction-manager="transactionManager"/>
+    3.在方法上面添加注解:@Transactional(propagation = Propagation.REQUIRED)
+-->
+<!--    引入子文件   -->
+<import resource="classpath:aop_dao.xml"/>
+</beans>
+
+

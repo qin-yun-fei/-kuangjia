@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 配置连接接口 映射实体-->
+<mapper namespace="com.qin.dao.UserMapper">
+    <select  id="selecAll" resultType="User">
+        select * from smbms_user <!-- id 必须是方法名-->
+    </select>
+    <select  id="selec01" resultType="User" ><!--  可用别名代替 -->
+        <!--单条查询 -->
+        select * from smbms_user where id = #{id}
+    </select>
+    <select  id="selecAll1" resultType="User" flushCache="true"><!--  可用别名代替 -->
+        <!--模糊条查询 -->
+        select * from smbms_user where userName like concat("%",#{uname},"%")
+    </select>
+    <select  id="selecAll2" resultType="User" flushCache="true"><!--  可用别名代替 -->
+        <!--对象查询 -->
+        select * from smbms_user where userCode = #{userCode} and  userPassword = #{userPassword}
+    </select>
+
+</mapper>

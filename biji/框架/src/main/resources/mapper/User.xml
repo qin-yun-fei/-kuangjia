@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.qin.dao.UserMapper1">
+        <resultMap id="u" type="User">
+          <id property="id" column="id"/>
+          <result property="pd" column="userPassword"/>
+            <result property="name" column="userName"/>
+
+        </resultMap>
+   <select  id="selecAll" resultMap="u" >
+  	select * from smbms_user
+  </select>
+  
+  <select  id="selec01" resultType="com.qin.entity.User" ><!--  可用别名代替 -->
+ <!--单条查询 -->
+  	select * from smbms_user where id = #{id}
+  </select>
+     <select  id="selecAll1" resultType="com.qin.entity.User" flushCache="true"><!--  可用别名代替 -->
+  <!--模糊条查询 -->
+  	select * from smbms_user where userName like concat("%",#{uname},"%")
+  </select>
+  
+   <select  id="selecAll2" resultType="com.qin.entity.User" flushCache="true"><!--  可用别名代替 -->
+  <!--对象查询 -->
+  	select * from smbms_user where userCode = #{userCode} and  userPassword = #{userPassword}
+  </select>
+  <update id= "update">
+  update smbms_user set userName=#{uname}  where id=#{uid}
+  </update>
+  </mapper>

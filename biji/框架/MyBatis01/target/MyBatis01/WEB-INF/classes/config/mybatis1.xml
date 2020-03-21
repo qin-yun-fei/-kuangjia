@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<properties resource="db.properties">  <!--引用外部文件-->
+		<!--		<property name="driver" value="com.mysql.jdbc.Driver"/>-->
+		<!--		<property name="url"-->
+		<!--				  value="jdbc:mysql://127.0.0.1:3306/smbms?serverTimezone=GMT%2B8"/>-->
+		<!--		<property name="username" value="root"/>-->
+		<!--		<property name="password" value="0000"/>-->
+	</properties>
+
+	<settings> <!--在比标签配置mybatis的行为-->
+		<setting name="logImpl" value="STDOUT_LOGGING" />	<!-- 显示sql日志 -->
+		<!-- <setting name="conheEnabled" value="flase" />	关闭缓存 -->
+		<!--<setting name="autoMappingBehavior" value="" />-->
+	</settings>
+	<environments default="develop">
+		<environment id="develop">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<!-- 相对路径 -->
+		<mapper resource="mapper/UserMapper.xml"/>
+		<!--    绝对路径  -->
+		<!--      <mapper url=""></mapper>-->
+	</mappers>
+</configuration>

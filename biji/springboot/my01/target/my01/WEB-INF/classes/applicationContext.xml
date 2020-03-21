@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 以前我们都需要自己创建user对象，现在spring来给我们创建
+        id：对象的名字，可以随便写，但是一般写类名首字母小写
+        class：写类的全类名
+        propery：类的属性
+            name：属性名
+            value：属性值
+    -->
+    <bean id="user" class="com.q.entity.User">
+        <property name="name" value="张三"/>
+    </bean>
+
+</beans>

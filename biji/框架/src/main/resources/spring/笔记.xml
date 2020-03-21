@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/ao<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd" default-autowire="byName">
+<!--开启注解扫描-->
+<context:component-scan base-package="dao,service,aop"/>
+<!--引入外部链接数据库文件-->
+<!--    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">-->
+<!--        <property name="location" value="classpath:db.properties"/>-->
+<!--    </bean>-->
+<!--    &lt;!&ndash;数据源,可以采用很多的连接池,dbcp,dbcp2,c3p0,druid...&ndash;&gt;-->
+<!--        <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
+<!--            <property name="driverClassName" value="${driver}"/>-->
+<!--            <property name="url" value="${url}"/>-->
+<!--            <property name="username" value="${user}"/>-->
+<!--            <property name="password" value="${password}"/>-->
+<!--        </bean>-->
+<!--数据源,可以采用很多的连接池,dbcp,dbcp2,c3p0,druid...-->
+<!--    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">-->
+<!--        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--        <property name="url" value="jdbc:mysql://localhost:3306/smbms?serverTimezone=UTC"/>-->
+<!--        <property name="username" value="root"/>-->
+<!--        <property name="password" value="123"/>-->
+<!--    </bean>-->
+
+<!--整合mybatis的所有资源文件配置
+    autowire="byName":spring回去查找一个与属性名相同的id注入
+    比如SqlSessionFactoryBean有一个dataSource属性,他就会去找id为dataSource的bean
+    找到后就自动注入给SqlSessionFactoryBean的dataSource属性
+    总结:只要我们数据源的id配置成dataSource,那么SqlSessionFactoryBean的dataSource属性会自动注入
+-->
+<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" autowire="byName">
+    <!--        <property name="dataSource" ref="dataSource"/>-->
+    <property name="configLocation" value="classpath:mybatis-config.xml"/>
+    <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+</bean>
+<!--接口扫描-->
+<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <property name="basePackage" value="dao"/>
+    <property name="sqlSessionFactoryBeanName" value="sessionFactory"/>
+</bean>
+
+<!--配置事务管理器-->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    <property name="dataSource" ref="dataSource"/>
+</bean>
+<!--开启事务注解驱动-->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+<!--
+    开启事务注解驱动,配置方法:
+    1.配置事务管理器
+    2.开启事务注解:<tx:annotation-driven transaction-manager="transactionManager"/>
+    3.在方法上面添加注解:@Transactional(propagation = Propagation.REQUIRED)
+-->
+<!--    引入子文件   -->
+<import resource="classpath:applicationContext-anno-dao.xml"/>
+</beans>p/spring-aop.xsd">
+    <!-- 不识别汉语Java类名-->
+    <!-- 扫描 service 包下 所有注解的类型-->
+    <context:component-scan base-package="com.f"/>
+    <!-- 数据源，可以采用很多的连接池-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://127.0.0.1:3306/smbms?serverTimezone=GMT%2B8"></property>
+        <property name="username" value="root"></property>
+        <property name="password" value="0000"></property>
+        <!-- <property resource="dp.properties">-->
+    </bean>
+    <!-- 整合mybatis配置文件-->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="mapperLocations" value="classpath:com/f/entity/*.xml"></property>
+    </bean>
+    <!-- 配置接口扫描-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.f.dao"></property>
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory">
+            <!-- value 值为 mybatis 配置文件 id 名-->
+        </property>
+    </bean>
+    <!-- 开启注解aop -->
+    <!--    <aop:aspectj-autoproxy />-->
+    <!--  -->
+
+
+</beans>
